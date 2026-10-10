@@ -3,7 +3,8 @@ PRAGMA foreign_keys=ON;
 CREATE TABLE IF NOT EXISTS clients (
     id INTEGER PRIMARY KEY,
     login TEXT NOT NULL CHECK(LENGTH(login) BETWEEN 4 AND 100),
-    password_hash TEXT NOT NULL CHECK(LENGTH(password_hash) BETWEEN 8 AND 10000)
+    password_hash TEXT NOT NULL CHECK(LENGTH(password_hash) BETWEEN 8 AND 10000),
+    UNIQUE(login)
 );
 
 CREATE TABLE IF NOT EXISTS projects (
