@@ -1,8 +1,8 @@
-PRAGMA foreign_keys = ON;
+PRAGMA foreign_keys=ON;
 
 CREATE TABLE IF NOT EXISTS clients (
     id INTEGER PRIMARY KEY,
-    login TEXT NOT NULL UNIQUE CHECK(LENGTH(login) BETWEEN 4 AND 100),
+    login TEXT NOT NULL CHECK(LENGTH(login) BETWEEN 4 AND 100),
     password_hash TEXT NOT NULL CHECK(LENGTH(password_hash) BETWEEN 8 AND 10000)
 );
 
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS projects (
     name TEXT NOT NULL CHECK(LENGTH(name) BETWEEN 1 AND 100),
     description TEXT CHECK(LENGTH(description) BETWEEN 1 AND 10000),
     status TEXT NOT NULL CHECK(status in ('active', 'completed')),
-    created_at TEXT NOT NULL,
+    created_at TEXT NOT NULL CHECK(LENGTH(created_at) BETWEEN 1 AND 10000),
     user_id INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES clients (id) ON DELETE CASCADE
 );
@@ -21,17 +21,17 @@ CREATE TABLE IF NOT EXISTS tasks (
     name TEXT NOT NULL CHECK(LENGTH(name) BETWEEN 1 AND 100),
     description TEXT CHECK(LENGTH(description) BETWEEN 1 AND 10000),
     status TEXT NOT NULL CHECK(status in ('start', 'pause', 'stop')),
-    created_at TEXT NOT NULL,
+    created_at TEXT NOT NULL CHECK(LENGTH(created_at) BETWEEN 1 AND 10000),
     project_id INTEGER NOT NULL,
     FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS time_logs (
     id INTEGER PRIMARY KEY,
-    datetime_start TEXT NOT NULL,
-    datetime_end TEXT,
-    comment TEXT CHECK(LENGTH(comment) BETWEEN 1 AND 1000),
-    duration TEXT,
+    datetime_start TEXT NOT NULL CHECK (LENGTH(datetime_start) BETWEEN 1 AND 10000),
+    datetime_end TEXT CHECK(LENGTH(datetime_end) BETWEEN 1 AND 10000),
+    comment TEXT CHECK(LENGTH(comment) BETWEEN 1 AND 10000),
+    duration TEXT CHECK(LENGTH(duration) BETWEEN 1 AND 10000),
     task_id INTEGER NOT NULL,
     FOREIGN KEY (task_id) REFERENCES tasks (id) ON DELETE CASCADE
 );
